@@ -2492,10 +2492,14 @@ BlueImpMD5.prototype.md5 = function (string, key, raw) {
             if (this.chanceType) {
                 var chance = new Chance();
                 var type = this.chanceType;
-                eval('var args =' + this.chanceArgs);
-                return args?chance[type].call(chance, args):chance[type]();
+                if (this.chanceArgs) {
+                    eval('var args =' + this.chanceArgs);
+                    return chance[type].call(chance, args);
+                } else {
+                    return chance[type]();
+                }
             }
-            return "Try something like `sentence` in Type" ;
+            return "Try something like `sentence` in Type";
         };
         this.title = function() {
             return "Chance Dynamic Value";
