@@ -2492,11 +2492,22 @@ BlueImpMD5.prototype.md5 = function (string, key, raw) {
             if (this.chanceType) {
                 var chance = new Chance();
                 var type = this.chanceType;
+                var value = null;
+
+                // compute value
                 if (this.chanceArgs) {
                     eval('var args =' + this.chanceArgs);
-                    return chance[type].call(chance, args);
+                    value = chance[type].call(chance, args);
                 } else {
-                    return chance[type]();
+                    value = chance[type]();
+                }
+
+                // serialize value if needed
+                if (typeof value === 'object') {
+                    return JSON.stringify(value);
+                }
+                else {
+                    return value.toString();
                 }
             }
             return "Try something like `sentence` in Type";
