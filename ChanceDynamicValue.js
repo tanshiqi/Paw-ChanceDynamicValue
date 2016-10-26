@@ -1632,18 +1632,24 @@ Chance.prototype.currency_pair = function (returnAsString) {
     }
 };
 
-Chance.prototype.dollar = function (options) {
+Chance.prototype.amount = function () {
     // By default, a somewhat more sane max for dollar than all available numbers
     options = initOptions(options, {max : 10000, min : 0});
 
-    var dollar = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
-        cents = dollar.split('.')[1];
+    var amount = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
+        cents = amount.split('.')[1];
 
     if (cents === undefined) {
-        dollar += '.00';
+        amount += '.00';
     } else if (cents.length < 2) {
-        dollar = dollar + '0';
+        amount = amount + '0';
     }
+
+    return amount;
+}
+
+Chance.prototype.dollar = function (options) {
+    dollar = this.amount();
 
     if (dollar < 0) {
         return '-$' + dollar.replace('-', '');
